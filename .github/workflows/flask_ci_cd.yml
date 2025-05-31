@@ -1,0 +1,47 @@
+name: Flask CI/CD
+
+on:
+  push:
+    branches: [main, staging]
+  release:
+    types: [published]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Tests
+        run: pytest || exit 1
+
+  deploy-staging:
+    if: github.ref == 'refs/heads/staging'
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Staging
+        run: echo "🚀 Deploying to Staging..."
+        env:
+          API_KEY: ${{ secrets.STAGING_API_KEY }}
+
+  deploy-production:
+    if: github.event_name == 'release'
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Production
+        run: echo "🚀 Deploying to Production..."
+        env:
+          API_KEY: ${{ secrets.PRODUCTION_API_KEY }}
