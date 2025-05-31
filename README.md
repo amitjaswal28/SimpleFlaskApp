@@ -39,6 +39,11 @@ Email notification configured (optional)
 
 GitHub repository configured with a Jenkinsfile
 
+![image](https://github.com/user-attachments/assets/7dabf3d0-9e74-4830-bddb-d9ce24d93128)
+![image](https://github.com/user-attachments/assets/c6b7f2d1-b6b2-4f67-a07e-2fbf59592a8c)
+
+
+
 ⚙️ GitHub Actions CI/CD Pipeline for Flask App
 ✅ Overview
 This GitHub Actions workflow automates:
