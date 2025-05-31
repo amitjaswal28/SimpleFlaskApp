@@ -27,29 +27,26 @@ pipeline {
             steps {
                 sh '''
                     . ${VENV_DIR}/bin/activate
-                    pytest > result.log || true
+                    pytest > result.log
                 '''
             }
             post {
                 always {
                     archiveArtifacts artifacts: 'result.log', allowEmptyArchive: true
                 }
-                unsuccessful {
-                    echo 'Tests failed!'
-                    currentBuild.result = 'FAILURE'
+                failure {
+                    echo '❌ Tests failed'
                 }
             }
         }
 
-       stage('Deploy') {
+        stage('Deploy') {
             when {
                 expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
             }
             steps {
-                sh '''
-                echo "Deploying to staging..."
-                # Example: gunicorn -w 4 app:app
-                '''
+                echo '🚀 Deploying Flask App to Staging (simulated)'
+                // Replace with real deployment commands if needed
             }
         }
     }
